@@ -1,0 +1,41 @@
+## network类与igraph类互转
+# 作者：wkp
+# 设置路径及加载包
+setwd("E:\\Office Account\\GitHub\\network类与igraph类互转")
+library(readxl)
+library(network)
+library(igraph)
+library(sna)
+# 方法1：直接在数据导入时定义类型好
+# network类导入
+data1 <- read.csv("data.csv")
+data1 <- as.matrix(data1)
+net1 <- as.network(data1,directed = F)
+plot(net1)
+summary(net1)
+sna::degree(net1)
+class(net1)
+# igraph类导入
+data2 <- read.csv("data.csv",header = T)
+data2 <- as.matrix(data2)
+net2 <- graph.adjacency(data2,mode = "undirected")
+net2.1 <- graph_from_adjacency_matrix(data2,mode = "undirected")
+plot(net2)
+summary(net2)
+summary(net2.1)
+igraph::degree(net2)
+igraph::degree(net2.1)
+class(net2)
+class(net2.1)
+
+## 方法2：若没有数据，直接是network对象，或直接是igraph对象，怎么转化
+# network转igraph
+net1.edge.matrix <- as.matrix.network(net1,matrix.type = "adjacency")
+net3 <- graph.adjacency(net1.edge.matrix,mode = "undirected")
+class(net3)
+
+# igraph转network
+net2.edge.matrix <- as_adjacency_matrix(net2)
+class(net2.edge.matrix)
+net4 <- as.network(as.matrix(net2.edge.matrix),directed = F)
+summary(net4)
