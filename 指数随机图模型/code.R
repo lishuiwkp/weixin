@@ -10,14 +10,14 @@
 ##************************************************
 
 # 设定路径
-setwd("E:\\Office Account\\GitHub\\指数随机图模型\\code.R")
+setwd("E:\\Office Account\\GitHub\\指数随机图模型")
 # 加载包
 library(network)
 library(sna)
 library(ergm)
 library(readxl)
 ## Step1:导入数据
-data1 <- read_xlsx("data1.xlsx")
+data1 <- read.csv("sub1.csv")
 data1 <- as.matrix(data1)
 # 利用network包将原始数据转化为network对象
 net1 <- as.network(data1,directed = F)
@@ -73,9 +73,9 @@ summary(model4)
 # 模型有效性检验
 # (1)拟合优度检验
 # 以model4为例
-model4_gof <- gof(model4,GOF = ~ degree + espartners+ dspartners,
+model4_gof <- ergm::gof(model4,GOF = ~ degree + espartners+ dspartners,
                   verbose = T, burnin = 10000,
-                  interval = 10000)
+                  interval = 1000)
 par(mfrow = c(2,3),mar = c(4,4,4,1),cex.main = .9,cex.lab = .9,cex.axis = .75)
 plot(model4_gof,plotlogodds = T)
 # (2)MCMC检验
